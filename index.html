@@ -10,11 +10,15 @@
     <h2>What's this</h2>
     <p>For each day in the current year, listen to a Lil B song.</p>
     <h2>Today's song</h2>
-    <p>Lil B - 4 Me:</p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/JdO_LcMLSu8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p class="no-js">
+      You need JavaScript for this bit. I'm too lazy to write a server.<br />
+      It's also possible that JavaScript is enabled, but something failed.
+      Check the console.
+    </p>
+    <div id="embed"></div>
     <h2>Full song list:</h2>
     <ol>
-      <li>Day 1: 4 Me</li>
+      <li data-embed-id="JdO_LcMLSu8">Day 1: 4 Me</li>
       <li>Day 2: BasedGod Fucked My Bitches</li>
       <li>Day 3: Wonton Soup</li>
       <li>Day 4: Pretty Bitch</li>
@@ -300,5 +304,54 @@
       <li>Day 284: BasedWorld 1989</li>
       <li>Day 285: Ima Eat Her Ass</li>
     </ol>
+    <script>
+      function removeNoJsWarnings() {
+        document.querySelectorAll('.no-js').forEach(el => {
+          el.remove();
+        });
+      }
+
+      function getDayOfYear() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const day = Math.floor(diff / oneDay);
+        return day;
+      }
+
+      function createEmbed() {
+        const dayOfYear = getDayOfYear();
+        const $li = document.querySelector(`ol li:nth-child(${dayOfYear})`);
+        const { embedId } = $li.dataset;
+        const $embed = document.querySelector('#embed');
+
+        if (embedId) {
+          $embed.innerHTML = `
+            <iframe
+              width="560" height="315"
+              src="https://www.youtube.com/embed/${embedId}"
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write;
+                encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          `;
+        } else {
+          const songName = $li.innerText.replace(/Day \d+:\s+/, '');
+          const query = `Lil B ${songName}`;
+          $embed.innerHTML = `
+            <a href="https://www.youtube.com/results?search_query=${query}" target="_blank">Search for ${query} on YouTube</a>
+          `;
+        }
+      }
+
+      function main() {
+        createEmbed();
+        removeNoJsWarnings();
+      }
+
+      main();
+    </script>
   </body>
 </html>

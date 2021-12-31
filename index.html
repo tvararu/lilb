@@ -19,7 +19,7 @@
     <div id="embed"></div>
     <h2>Full song list:</h2>
     <ol>
-      <li data-embed-id="JdO_LcMLSu8">Day 1: 4 Me</li>
+      <li><a href="https://www.youtube.com/watch?v=JdO_LcMLSu8">Day 1: 4 Me</a></li>
       <li>Day 2: BasedGod Fucked My Bitches</li>
       <li>Day 3: Wonton Soup</li>
       <li>Day 4: Pretty Bitch</li>
@@ -383,7 +383,7 @@
       <li>Day 362: Thank You BasedGod</li>
       <li>Day 363: You Saved Me</li>
       <li>Day 364: I Love You</li>
-      <li data-embed-id="1R9zu8Id8oM">Day 365: Goodbye</li>
+      <li><a href="https://www.youtube.com/watch?v=1R9zu8Id8oM">Day 365: Goodbye</a></li>
     </ol>
     <script>
       function removeNoJsWarnings() {
@@ -404,10 +404,11 @@
       function createEmbed() {
         const dayOfYear = getDayOfYear();
         const $li = document.querySelector(`ol li:nth-child(${dayOfYear})`);
-        const { embedId } = $li.dataset;
         const $embed = document.querySelector('#embed');
+        const $anchor = $li.querySelector('a');
 
-        if (embedId) {
+        if ($anchor) {
+          const embedId = $anchor.href.split('v=').pop();
           $embed.innerHTML = `
             <iframe
               width="560" height="315"
